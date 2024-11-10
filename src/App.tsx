@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { appContainer, board, buttons } from "./App.css";
-import BoardList from "./components/BoardList/boardList";
 import { IBoard } from "./types";
+import BoardList from "./components/BoardList/BoardList";
 
 const App = () => {
   const [activeBoardId, setActiveBoardId] = useState<string>("board-0");
