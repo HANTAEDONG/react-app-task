@@ -2,7 +2,15 @@ import { useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
 import SideForm from "./SideForm";
 import { FiPlusCircle } from "react-icons/fi";
-import { addButton, addSection, container, title } from "./BoardList.css";
+import {
+  addButton,
+  addSection,
+  boardItem,
+  boardItemActive,
+  container,
+  title,
+} from "./BoardList.css";
+import clsx from "clsx";
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -10,14 +18,28 @@ type TBoardListProps = {
 };
 
 const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
-  // redux에서 보드의 상태가져오기
   const { boardArray } = useAppSelector((state) => state.board);
   const [isFormOpen, setIsFormOpen] = useState(false);
   return (
     <div className={container}>
       <div className={title}>게시판: </div>
-      {boardArray.map((board) => (
-        <div key={board.boardId}>
+      {boardArray.map((board, index) => (
+        <div
+          key={board.boardId}
+          onClick={() => setActiveBoardId(boardArray[index].boardId)}
+          className={clsx(
+            {
+              [boardItemActive]:
+                boardArray.findIndex((b) => b.boardId === activeBoardId) ===
+                index,
+            },
+            {
+              [boardItem]:
+                boardArray.findIndex((b) => b.boardId === activeBoardId) !==
+                index,
+            }
+          )}
+        >
           <div>{board.boardName}</div>
         </div>
       ))}
