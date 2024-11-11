@@ -19,7 +19,7 @@ export type TLogItem = {
 export interface IBoard {
   boardId: string;
   boardName: string;
-  lists?: IList[];
+  lists: IList[];
 }
 
 export interface IList {
