@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
-import SideForm from "./SideForm";
+
 import { FiPlusCircle } from "react-icons/fi";
 import {
   addButton,
@@ -11,6 +11,7 @@ import {
   title,
 } from "./BoardList.css";
 import clsx from "clsx";
+import SideForm from "./SideForm/SideForm";
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -20,6 +21,10 @@ type TBoardListProps = {
 const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
   const { boardArray } = useAppSelector((state) => state.board);
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const handleClick = () => {
+    setIsFormOpen(!isFormOpen);
+  };
   return (
     <div className={container}>
       <div className={title}>게시판: </div>
@@ -45,12 +50,9 @@ const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
       ))}
       <div className={addSection}>
         {isFormOpen ? (
-          <SideForm />
+          <SideForm setIsFormOpen={setIsFormOpen} />
         ) : (
-          <FiPlusCircle
-            className={addButton}
-            onClick={() => setIsFormOpen(!isFormOpen)}
-          />
+          <FiPlusCircle className={addButton} onClick={handleClick} />
         )}
       </div>
     </div>
