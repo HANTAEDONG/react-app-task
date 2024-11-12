@@ -4,16 +4,19 @@ import { IBoard } from "./types";
 import BoardList from "./components/BoardList/BoardList";
 import ListContainer from "./components/ListContainer/ListContainer";
 import { useAppSelector } from "./hooks/redux";
+import ModalEdit from "./components/ModalEdit/ModalEdit";
 
 const App = () => {
   const [activeBoardId, setActiveBoardId] = useState<string>("board-0");
   const boards = useAppSelector((state) => state.board.boardArray);
+  const modalActive = useAppSelector((state) => state.board.modalActive);
   const activeBoard: IBoard = boards.filter(
     (board) => board.boardId === activeBoardId
   )[0];
   const { lists } = activeBoard;
   return (
     <div className={appContainer}>
+      {modalActive ? <ModalEdit /> : null}
       <BoardList
         activeBoardId={activeBoardId}
         setActiveBoardId={setActiveBoardId}
