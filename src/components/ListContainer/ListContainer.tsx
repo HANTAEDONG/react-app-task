@@ -1,7 +1,7 @@
 import { IList } from "../../types";
-import ActoinButton from "../ActionButton/ActoinButton";
-import List from "./List";
-import { ListsContainer } from "./ListContainr.css";
+import ActionButton from "../ActionButton/ActionButton";
+import List from "../List/List";
+import { ListsContainer } from "./ListContainer.css";
 
 type TListContainerProps = {
   lists: IList[];
@@ -14,7 +14,7 @@ const ListContainer = ({ lists, boardId }: TListContainerProps) => {
       {lists.map((list, index) => (
         <List key={list.listId} list={list} boardId={boardId} />
       ))}
-      <ActoinButton />
+      <ActionButton boardId={boardId} listId={""} />
     </div>
   );
 };

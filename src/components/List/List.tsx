@@ -1,14 +1,16 @@
 import React from "react";
 import { IList, ITask } from "../../types";
 import { GrSubtract } from "react-icons/gr";
-import Task from "./Task";
-import ActoinButton from "../ActionButton/ActoinButton";
+
 import { useAppDispatch } from "../../hooks/redux";
-import ActionButton from "../ActionButton/ActoinButton";
+
 import { deleteList, setModalActive } from "../../store/slices/boardSlice";
 import { v4 } from "uuid";
 import { addLog } from "../../store/slices/loggerSlice";
 import { setModalData } from "../../store/slices/modalSlice";
+import Task from "../Task/Task";
+import { ListWrapper, deleteButton, header, name } from "./List.css";
+import ActionButton from "../ActionButton/ActionButton";
 
 type TListProp = {
   list: IList;
@@ -44,9 +46,14 @@ const List = ({ list, boardId }: TListProp) => {
     dispatch(setModalActive(true));
   };
   return (
-    <div>
-      <div>{list.listName}</div>
-      <GrSubtract onClick={() => handleListDelete(list.listId)} />
+    <div className={ListWrapper}>
+      <div className={header}>
+        <div className={name}>{list.listName}</div>
+        <GrSubtract
+          className={deleteButton}
+          onClick={() => handleListDelete(list.listId)}
+        />
+      </div>
       {list.tasks.map((task, index) => (
         <div
           key={task.taskId}
@@ -63,7 +70,7 @@ const List = ({ list, boardId }: TListProp) => {
           />
         </div>
       ))}
-      <ActionButton />
+      <ActionButton boardId={boardId} listId={list.listId} list />
     </div>
   );
 };
