@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IBoard } from "../../types";
+import { IBoard, IList, ITask } from "../../types";
 
 type TBoardState = {
   modalActive: boolean;
@@ -13,6 +13,17 @@ type TAddBoardAction = {
 type TDeleteListAction = {
   boardId: string;
   listId: string;
+};
+
+type TAddListAction = {
+  boardId: string;
+  list: IList;
+};
+
+type TAddTaskAction = {
+  boardId: string;
+  listId: string;
+  task: ITask;
 };
 
 const initialState: TBoardState = {
@@ -64,17 +75,34 @@ const boardSlice = createSlice({
     addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
       state.boardArray.push(payload.board);
     },
-    deleteList: (state, { payload }: PayloadAction<TDeleteListAction>) => {
-      state.boardArray = state.boardArray.map((board) =>
-        board.boardId === payload.boardId
-          ? {
-              ...board,
-              lists: board.lists.filter(
-                (list) => list.listId !== payload.listId
-              ),
-            }
-          : board
+    addList: (state, { payload }: PayloadAction<TAddListAction>) => {
+      const board = state.boardArray.find(
+        (board) => board.boardId === payload.boardId
       );
+      if (board) {
+        board.lists.push(payload.list);
+      }
+    },
+    addTask: (state, { payload }: PayloadAction<TAddTaskAction>) => {
+      const board = state.boardArray.find(
+        (board) => board.boardId === payload.boardId
+      );
+      if (board) {
+        const list = board.lists.find((list) => list.listId === payload.listId);
+        if (list) {
+          list.tasks.push(payload.task);
+        }
+      }
+    },
+    deleteList: (state, { payload }: PayloadAction<TDeleteListAction>) => {
+      const board = state.boardArray.find(
+        (board) => board.boardId === payload.boardId
+      );
+      if (board) {
+        board.lists = board.lists.filter(
+          (list) => list.listId !== payload.listId
+        );
+      }
     },
     setModalActive: (state, { payload }: PayloadAction<boolean>) => {
       state.modalActive = payload;
@@ -82,5 +110,6 @@ const boardSlice = createSlice({
   },
 });
 
-export const { addBoard, deleteList, setModalActive } = boardSlice.actions;
+export const { addBoard, deleteList, setModalActive, addList, addTask } =
+  boardSlice.actions;
 export const boardReducer = boardSlice.reducer;
